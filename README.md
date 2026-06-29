@@ -1,6 +1,6 @@
 # Wobb Influencer Search
 
-Live demo: [Not deployed — Phase 8 skipped per instructions]
+Live demo: [https://search-dashboard-brown.vercel.app/](https://search-dashboard-brown.vercel.app/)
 
 ## What I Changed
 
