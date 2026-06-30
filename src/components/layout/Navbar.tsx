@@ -13,12 +13,13 @@ export function Navbar() {
     <>
       <nav className="sticky top-0 z-40 w-full border-b border-[var(--border)] backdrop-blur-xl bg-[var(--bg-base)]/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 group">
-            <Zap className="w-6 h-6 text-[var(--accent)] group-hover:scale-110 transition-transform" />
-            <span className="text-xl font-bold font-display text-[var(--text-primary)] tracking-tight">
-              Wobb
-            </span>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1 transition-colors">
+              <span aria-hidden="true">&larr;</span> Back to Searchify
+            </Link>
+            <div className="h-4 w-px bg-[var(--border)] hidden sm:block"></div>
+
+          </div>
 
           <button
             onClick={() => setPanelOpen(true)}

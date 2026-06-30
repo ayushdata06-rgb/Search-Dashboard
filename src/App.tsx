@@ -1,10 +1,17 @@
-import { AppRouter } from './router';
+import { BrowserRouter, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { AnimatedRoutes } from './router';
+import { useLenis } from '@/hooks/useLenis';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+
+  useLenis(!isDashboard);
+
   return (
     <>
-      <AppRouter />
+      <AnimatedRoutes />
       <Toaster
         position="bottom-right"
         toastOptions={{
@@ -16,6 +23,14 @@ function App() {
         }}
       />
     </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }
 

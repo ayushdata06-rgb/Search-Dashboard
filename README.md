@@ -2,6 +2,32 @@
 
 Live demo: [https://search-dashboard-brown.vercel.app/](https://search-dashboard-brown.vercel.app/)
 
+## Site Structure
+
+This submission is a 3-page experience:
+
+1. **/ (Cover)** — animated brand intro using GSAP (staggered text reveal) 
+   and a Three.js particle background
+2. **/features** — product walkthrough explaining search, filters, profiles, 
+   and the saved list, with GSAP ScrollTrigger reveal animations
+3. **/dashboard** — the full Wobb influencer search application 
+   (the actual assignment deliverable)
+
+### Animation library choices
+- **GSAP** — page-load text reveal, scroll-triggered feature reveals
+- **Lenis** — smooth scroll on marketing pages only (disabled on /dashboard 
+  to avoid conflicts with the saved-list panel's internal scrolling)
+- **Anime.js** — CTA button hover micro-interaction
+- **Three.js (react-three-fiber)** — ambient particle background on cover page
+- **Framer Motion** — route transitions, dashboard card animations, 
+  saved-list slide-over panel
+
+I evaluated Barba.js for page transitions but decided against it — it's 
+designed for traditional multi-page sites with full page reloads, and 
+conflicts with React Router's virtual DOM control in an SPA. Framer Motion's 
+AnimatePresence achieves the same transition effect natively within React's 
+render cycle, without fighting Zustand state or component lifecycles.
+
 ## What I Changed
 
 ### Bug Fixes

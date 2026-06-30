@@ -48,17 +48,7 @@ export function ProfilePage() {
     }
   }, [user, username, platform, isInList, addProfile, removeProfile]);
 
-  useEffect(() => {
-    if (!user || !statsRef.current) return;
-    const statValues = statsRef.current.querySelectorAll('.stat-value');
-    gsap.from(statValues, {
-      textContent: 0,
-      duration: 1.2,
-      ease: 'power2.out',
-      snap: { textContent: 1 },
-      stagger: 0.1,
-    });
-  }, [user]);
+  // GSAP text animation removed to support formatted M/K strings
 
   if (loading) {
     return (
@@ -72,7 +62,7 @@ export function ProfilePage() {
     return (
       <PageWrapper>
         <Link
-          to="/"
+          to="/dashboard"
           className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -87,21 +77,12 @@ export function ProfilePage() {
     { label: 'Followers', value: user.followers },
     ...(user.posts_count ? [{ label: 'Posts', value: user.posts_count }] : []),
     ...(user.avg_likes ? [{ label: 'Avg Likes', value: user.avg_likes }] : []),
-    ...(user.avg_views && user.avg_views > 0
-      ? [{ label: 'Avg Views', value: user.avg_views }]
-      : []),
-    ...(user.avg_comments
-      ? [{ label: 'Avg Comments', value: user.avg_comments }]
-      : []),
-    ...(user.engagements
-      ? [{ label: 'Engagements', value: user.engagements }]
-      : []),
   ];
 
   return (
     <PageWrapper>
       <Link
-        to="/"
+        to="/dashboard"
         className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
@@ -112,9 +93,12 @@ export function ProfilePage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card p-6 sm:p-8 mb-6"
+        className="card relative overflow-hidden p-6 sm:p-8 mb-6"
       >
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <div className="absolute -top-32 -right-32 w-64 h-64 bg-[var(--accent)] rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-[var(--accent-secondary)] rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+        
+        <div className="relative flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <Avatar
             src={user.picture}
             alt={user.fullname}
@@ -155,10 +139,10 @@ export function ProfilePage() {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl bg-[var(--bg-base)] border border-[var(--border)] p-3 text-center"
+              className="rounded-xl bg-[var(--bg-base)] border border-[var(--border)] p-3 text-center transition-all duration-300 hover:border-[var(--accent)]/50 hover:shadow-[0_4px_20px_rgba(147,51,234,0.15)] hover:-translate-y-1"
             >
               <div className="stat-value text-lg font-bold font-mono text-[var(--text-primary)]">
-                {formatNumber(stat.value)}
+                {formatCompact(stat.value)}
               </div>
               <div className="text-xs text-[var(--text-muted)] mt-0.5">
                 {stat.label}
@@ -171,11 +155,10 @@ export function ProfilePage() {
         <div className="flex flex-wrap items-center gap-3 mt-6">
           <button
             onClick={handleToggleList}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
-              isInList
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${isInList
                 ? 'bg-[var(--success)]/15 text-[var(--success)] border border-[var(--success)]/30'
-                : 'bg-[var(--accent)] text-white hover:opacity-90'
-            }`}
+                : 'bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.5)] hover:scale-105 active:scale-95'
+              }`}
           >
             {isInList ? (
               <>
@@ -228,11 +211,10 @@ function ProfileTabs({ user }: { user: FullUserProfile }) {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`relative px-6 py-3 text-sm font-medium transition-colors ${
-              activeTab === tab.id
+            className={`relative px-6 py-3 text-sm font-medium transition-colors ${activeTab === tab.id
                 ? 'text-[var(--accent)]'
                 : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
-            }`}
+              }`}
           >
             {tab.label}
             {activeTab === tab.id && (
@@ -327,7 +309,7 @@ function StatsTab({ user }: { user: FullUserProfile }) {
       {detailedStats.map((stat) => (
         <div
           key={stat.label}
-          className="rounded-xl bg-[var(--bg-base)] border border-[var(--border)] p-4"
+          className="rounded-xl bg-[var(--bg-base)] border border-[var(--border)] p-4 transition-all duration-300 hover:border-[var(--accent)]/50 hover:shadow-[0_4px_20px_rgba(147,51,234,0.15)] hover:-translate-y-1"
         >
           <div className="text-lg font-bold font-mono text-[var(--text-primary)]">
             {stat.value}

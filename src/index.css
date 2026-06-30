@@ -5,9 +5,9 @@
   --bg-surface: #111118;
   --bg-elevated: #1a1a24;
   --border: rgba(255, 255, 255, 0.08);
-  --accent: #7c3aed;
-  --accent-glow: rgba(124, 58, 237, 0.3);
-  --accent-secondary: #06b6d4;
+  --accent: #9333ea;
+  --accent-glow: rgba(147, 51, 234, 0.3);
+  --accent-secondary: #3b82f6;
   --text-primary: #f0f0ff;
   --text-secondary: #8b8ba7;
   --text-muted: #4a4a6a;
@@ -15,8 +15,8 @@
   --youtube: #ff0000;
   --tiktok: #69c9d0;
   --success: #10b981;
-  --card-bg: rgba(255, 255, 255, 0.03);
-  --card-border: rgba(255, 255, 255, 0.07);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
 
   --sans: 'Inter', system-ui, -apple-system, sans-serif;
   --display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
@@ -71,12 +71,15 @@ p {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-color: rgba(147, 51, 234, 0.3);
+  box-shadow: 0 10px 40px -10px rgba(147, 51, 234, 0.2);
+  transform: translateY(-2px);
 }
 
 /* ---- Scrollbar ---- */

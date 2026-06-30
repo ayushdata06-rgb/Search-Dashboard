@@ -34,7 +34,7 @@ export function PlatformFilter({ selected, onChange }: PlatformFilterProps) {
           {selected === p && (
             <motion.div
               layoutId="platform-indicator"
-              className="absolute inset-0 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)]"
+              className="absolute inset-0 rounded-lg bg-gradient-to-r from-[var(--accent)]/20 to-[var(--accent-secondary)]/20 border border-[var(--accent)]/30 shadow-[inset_0_0_10px_rgba(147,51,234,0.1)]"
               transition={{ type: 'spring', damping: 30, stiffness: 400 }}
             />
           )}

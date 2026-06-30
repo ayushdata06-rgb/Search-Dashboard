@@ -27,7 +27,7 @@ export const InfluencerCard = memo(function InfluencerCard({
   const displayUsername = profile.username ?? profile.handle ?? profile.custom_name ?? profile.user_id;
 
   const handleClick = useCallback(() => {
-    navigate(`/profile/${displayUsername}?platform=${platform}`);
+    navigate(`/dashboard/profile/${displayUsername}?platform=${platform}`);
   }, [navigate, displayUsername, platform]);
 
   const handleToggleList = useCallback(
