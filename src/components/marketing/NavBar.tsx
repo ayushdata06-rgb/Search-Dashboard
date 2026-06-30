@@ -20,7 +20,7 @@ export function NavBar() {
             <Link
               key={link.to}
               to={link.to}
-              onClick={(e) => {
+              onClick={() => {
                 if (link.hash === '#cover') {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {

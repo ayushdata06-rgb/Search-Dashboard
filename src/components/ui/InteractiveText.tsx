@@ -103,7 +103,7 @@ export function InteractiveText({ text, className = '' }: InteractiveTextProps) 
       {letters.map((char, i) => (
         <span
           key={i}
-          ref={(el) => (lettersRef.current[i] = el)}
+          ref={(el) => { lettersRef.current[i] = el; }}
           // We include the 'letter' class so the CoverPage entrance animation still works!
           className="letter inline-block whitespace-pre"
           style={{ willChange: 'transform' }}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, List } from 'lucide-react';
+import { List } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { useListStore } from '@/store/useListStore';
 import { SavedListPanel } from '@/components/list/SavedListPanel';

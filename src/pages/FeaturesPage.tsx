@@ -2,7 +2,6 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Search, Filter, BarChart3, BookmarkPlus } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -102,7 +101,6 @@ const features = [
 
 export function FeaturesPage() {
   const container = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useGSAP(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
