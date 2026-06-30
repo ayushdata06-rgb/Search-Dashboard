@@ -1,4 +1,4 @@
-#
+#SEARCHIFY
 
 Live demo: [https://search-dashboard-brown.vercel.app/](https://search-dashboard-brown.vercel.app/)
 
