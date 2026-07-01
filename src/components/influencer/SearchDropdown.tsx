@@ -57,7 +57,7 @@ export function SearchDropdown() {
     : [];
 
   return (
-    <div className="relative w-full max-w-[680px] mx-auto z-50" ref={containerRef}>
+    <div className="relative w-full max-w-[680px] mx-auto z-30" ref={containerRef}>
       <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
       <input
         type="text"

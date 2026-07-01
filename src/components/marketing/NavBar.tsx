@@ -6,7 +6,7 @@ export function NavBar() {
   const currentHash = location.hash || '#cover';
 
   const links = [
-    { to: '/', hash: '#cover', label: 'Cover' },
+    { to: '/', hash: '#cover', label: 'Home' },
     { to: '/#features', hash: '#features', label: 'Features' },
   ];
 

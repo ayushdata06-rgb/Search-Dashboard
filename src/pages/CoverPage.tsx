@@ -142,13 +142,13 @@ export function CoverPage() {
         <div className="flex flex-col w-full max-w-5xl z-10 pointer-events-none">
           {/* SEARCH centered */}
           <div className="flex justify-center w-full">
-            <h1 className="text-[#f0f0ff] uppercase pointer-events-auto" style={{
-              fontFamily: 'var(--font-display)',
-              fontWeight: 900,
-              fontSize: 'clamp(56px, 12vw, 160px)',
-              lineHeight: 0.92,
-              letterSpacing: '-0.04em',
-            }}>
+              <h1 className="text-[#f0f0ff] uppercase pointer-events-auto" style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 900,
+                fontSize: 'clamp(48px, 10vw, 130px)',
+                lineHeight: 0.92,
+                letterSpacing: '-0.04em',
+              }}>
               <InteractiveText text="SEARCH" />
             </h1>
           </div>
@@ -174,7 +174,7 @@ export function CoverPage() {
               <h1 className="ify-text uppercase pointer-events-auto" style={{
                 fontFamily: 'var(--font-display)',
                 fontWeight: 900,
-                fontSize: 'clamp(56px, 12vw, 160px)',
+                fontSize: 'clamp(48px, 10vw, 130px)',
                 lineHeight: 0.92,
                 letterSpacing: '-0.04em',
               }}>
@@ -182,8 +182,8 @@ export function CoverPage() {
               </h1>
 
               {/* Text & CTA button below IFY */}
-              <div className="mt-8 md:mt-12 flex flex-col items-center md:items-start pointer-events-auto w-full max-w-lg">
-                 <div className="text-[#a0a0b8] font-sans font-light text-lg md:text-[22px] text-center md:text-left leading-snug tracking-wide flex flex-col items-center md:items-start gap-1">
+              <div className="mt-4 md:mt-6 flex flex-col items-center md:items-start pointer-events-auto w-full max-w-lg">
+                 <div className="text-[#a0a0b8] font-['Plus_Jakarta_Sans'] font-light text-lg md:text-[22px] text-center md:text-left leading-snug tracking-wide flex flex-col items-center md:items-start gap-1">
                    <BlindsTextReveal delay={1.4}>
                      Search across <span className="text-[#f0f0ff] font-medium">Instagram</span>, <span className="text-[#f0f0ff] font-medium">YouTube</span> and <span className="text-[#f0f0ff] font-medium">TikTok</span> in one place.
                    </BlindsTextReveal>
@@ -192,7 +192,7 @@ export function CoverPage() {
                    </BlindsTextReveal>
                  </div>
                  
-                 <div className="mt-10 md:mt-14 w-full flex flex-col sm:flex-row items-center md:justify-start gap-6">
+                 <div className="mt-6 md:mt-8 w-full flex flex-col sm:flex-row items-center md:justify-start gap-6">
                    <motion.button
                      onClick={() => navigate('/dashboard')}
                      className="relative group px-8 py-4 rounded-full font-medium text-[16px] text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-[0_0_40px_rgba(124,58,237,0.4)] flex items-center justify-center gap-3 border border-[rgba(255,255,255,0.1)] cursor-pointer w-full sm:w-auto overflow-hidden"
@@ -242,19 +242,21 @@ export function CoverPage() {
                 className="search-mockup-card cursor-grab active:cursor-grabbing w-[90%] md:w-full max-w-[420px]"
                 style={{ 
                   touchAction: 'none',
-                  background: 'rgba(26, 26, 36, 0.95)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(35, 35, 45, 0.85)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255,255,255,0.15)',
                   borderRadius: '20px',
                   padding: '20px',
-                  boxShadow: '0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px rgba(124,58,237,0.12)'
+                  boxShadow: '0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1), inset 0 0 20px rgba(255,255,255,0.03), 0 0 60px rgba(124,58,237,0.15)'
                 }}
               >
                 {/* Header */}
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-[#7c3aed] rounded-full flex items-center justify-center text-xs font-bold text-white font-[Inter]">S</div>
+                  <div className="w-8 h-8 bg-[#7c3aed] rounded-full flex items-center justify-center text-xs font-bold text-white font-['Plus_Jakarta_Sans']">S</div>
                   <div className="flex flex-col">
-                    <span className="text-[13px] font-bold text-white font-[Inter]">@searchify</span>
-                    <span className="text-[11px] text-[#4a4a6a] font-[Inter]">Influencer Search</span>
+                    <span className="text-[13px] font-bold text-white font-['Plus_Jakarta_Sans']">@searchify</span>
+                    <span className="text-[11px] text-[#4a4a6a] font-['Plus_Jakarta_Sans']">Influencer Search</span>
                   </div>
                   <div className="ml-auto text-[#4a4a6a] text-lg leading-none tracking-widest">&middot;&middot;&middot;</div>
                 </div>
@@ -262,7 +264,7 @@ export function CoverPage() {
                 {/* Search bar */}
                 <div className="mt-4 w-full h-[44px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[10px] flex items-center gap-[10px] px-[14px]">
                   <Search size={16} color="#4a4a6a" />
-                  <span className="typing-text text-[14px] text-white font-[Inter]"></span>
+                  <span className="typing-text text-[14px] text-white font-['Plus_Jakarta_Sans']"></span>
                   <span className="cursor" style={{ animation: 'blink 1s step-end infinite', color: '#7c3aed' }}>|</span>
                 </div>
 
@@ -273,13 +275,13 @@ export function CoverPage() {
                       <div className="w-full h-full bg-[#1a1a24] rounded-full"></div>
                     </div>
                     <div className="flex flex-col">
-                      <div className="text-[13px] font-bold text-[#f0f0ff] font-[Inter]">@cristiano</div>
-                      <div className="text-[12px] text-[#4a4a6a] font-[Inter] flex items-center">
+                      <div className="text-[13px] font-bold text-[#f0f0ff] font-['Plus_Jakarta_Sans']">@cristiano</div>
+                      <div className="text-[12px] text-[#4a4a6a] font-['Plus_Jakarta_Sans'] flex items-center">
                         Cristiano Ronaldo 
                         <span className="text-[10px] px-2 py-0.5 rounded-full ml-2" style={{ background: 'rgba(225,48,108,0.15)', color: '#e1306c' }}>Instagram</span>
                       </div>
                     </div>
-                    <div className="text-[12px] text-[#4a4a6a] font-[Inter] ml-auto">641.3M</div>
+                    <div className="text-[12px] text-[#4a4a6a] font-['Plus_Jakarta_Sans'] ml-auto">641.3M</div>
                   </div>
 
                   <div className="result-row px-3 py-2.5 rounded-[10px] flex items-center gap-3">
@@ -287,13 +289,13 @@ export function CoverPage() {
                       <div className="w-full h-full bg-[#1a1a24] rounded-full"></div>
                     </div>
                     <div className="flex flex-col">
-                      <div className="text-[13px] font-bold text-[#f0f0ff] font-[Inter]">@mrbeast</div>
-                      <div className="text-[12px] text-[#4a4a6a] font-[Inter] flex items-center">
+                      <div className="text-[13px] font-bold text-[#f0f0ff] font-['Plus_Jakarta_Sans']">@mrbeast</div>
+                      <div className="text-[12px] text-[#4a4a6a] font-['Plus_Jakarta_Sans'] flex items-center">
                         MrBeast 
                         <span className="text-[10px] px-2 py-0.5 rounded-full ml-2" style={{ background: 'rgba(255,0,0,0.15)', color: '#ff0000' }}>YouTube</span>
                       </div>
                     </div>
-                    <div className="text-[12px] text-[#4a4a6a] font-[Inter] ml-auto">312.0M</div>
+                    <div className="text-[12px] text-[#4a4a6a] font-['Plus_Jakarta_Sans'] ml-auto">312.0M</div>
                   </div>
 
                   <div className="result-row px-3 py-2.5 rounded-[10px] flex items-center gap-3">
@@ -301,17 +303,17 @@ export function CoverPage() {
                       <div className="w-full h-full bg-[#1a1a24] rounded-full"></div>
                     </div>
                     <div className="flex flex-col">
-                      <div className="text-[13px] font-bold text-[#f0f0ff] font-[Inter]">@selenagomez</div>
-                      <div className="text-[12px] text-[#4a4a6a] font-[Inter] flex items-center">
+                      <div className="text-[13px] font-bold text-[#f0f0ff] font-['Plus_Jakarta_Sans']">@selenagomez</div>
+                      <div className="text-[12px] text-[#4a4a6a] font-['Plus_Jakarta_Sans'] flex items-center">
                         Selena Gomez 
                         <span className="text-[10px] px-2 py-0.5 rounded-full ml-2" style={{ background: 'rgba(105,201,208,0.15)', color: '#69c9d0' }}>TikTok</span>
                       </div>
                     </div>
-                    <div className="text-[12px] text-[#4a4a6a] font-[Inter] ml-auto">423.9M</div>
+                    <div className="text-[12px] text-[#4a4a6a] font-['Plus_Jakarta_Sans'] ml-auto">423.9M</div>
                   </div>
                 </div>
 
-                <div className="text-center font-[Inter] text-[11px] text-[#4a4a6a] mt-3.5 pt-3.5 border-t border-[rgba(255,255,255,0.06)]">
+                <div className="text-center font-['Plus_Jakarta_Sans'] text-[11px] text-[#4a4a6a] mt-3.5 pt-3.5 border-t border-[rgba(255,255,255,0.06)]">
                   30 creators across 3 platforms
                 </div>
               </div>
