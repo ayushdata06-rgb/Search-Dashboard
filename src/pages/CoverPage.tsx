@@ -1,14 +1,36 @@
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { Draggable } from 'gsap/Draggable';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { Draggable } from 'gsap/Draggable';
+import { Search } from 'lucide-react';
+import { FeaturesPage } from './FeaturesPage';
 import { InteractiveText } from '@/components/ui/InteractiveText';
 import { motion } from 'framer-motion';
-import { Search, Heart, MessageCircle, Bookmark } from 'lucide-react';
-import { FeaturesPage } from './FeaturesPage';
+import { useNavigate } from 'react-router-dom';
+import { SiInstagram, SiYoutube, SiTiktok } from 'react-icons/si';
 
 gsap.registerPlugin(Draggable);
+
+function BlindsTextReveal({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) {
+  return (
+    <div className={`relative overflow-hidden inline-block ${className}`}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0, delay: delay }}
+      >
+        {children}
+      </motion.div>
+      <motion.div
+        className="absolute inset-0 bg-[#7c3aed]"
+        initial={{ x: 0 }}
+        animate={{ x: '-101%' }}
+        transition={{ duration: 0.6, ease: [0.28, 0.25, 0.18, 0.98], delay }}
+        style={{ transformOrigin: 'left center' }}
+      />
+    </div>
+  );
+}
 
 export function CoverPage() {
   const container = useRef<HTMLDivElement>(null);
@@ -17,28 +39,47 @@ export function CoverPage() {
 
   useGSAP(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    if (!prefersReducedMotion) {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      tl.from('.letter', {
-        y: 80,
-        opacity: 0,
-        stagger: 0.04,
-        duration: 0.8,
-      })
-      .from('.subhead', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-      }, '-=0.3')
-      .from('.insta-tool', {
-        scale: 0.8,
-        opacity: 0,
-        rotation: 5,
-        duration: 0.8,
-        ease: 'back.out(1.5)',
-      }, '-=0.4');
+    if (!prefersReducedMotion) {
+      gsap.fromTo('.letter', 
+        {
+          opacity: 0,
+          y: 100,
+          rotationX: -90,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          transformOrigin: '0% 50% -60px',
+          stagger: {
+            amount: 0.6,
+            from: 'start',
+          },
+          duration: 0.9,
+          ease: 'power4.out',
+          delay: 0.1,
+        }
+      );
+
+      gsap.fromTo('.search-mockup-card', 
+        {
+          opacity: 0,
+          scale: 0.8,
+          rotation: 5,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+          duration: 0.8,
+          ease: 'back.out(1.5)',
+          delay: 0.8,
+          clearProps: 'transform' // clean up after to prevent interfering with draggable
+        }
+      );
+    } else {
+      gsap.set('.letter', { opacity: 1, y: 0 });
     }
 
     if (toolRef.current) {
@@ -54,72 +95,232 @@ export function CoverPage() {
       });
     }
 
+    const queries = ['cristiano', 'mrbeast', 'sel', 'bey'];
+    let queryIndex = 0;
+    
+    function runTypingLoop() {
+      const loopTl = gsap.timeline({
+        onComplete: () => {
+          queryIndex = (queryIndex + 1) % queries.length;
+          runTypingLoop();
+        }
+      });
+
+      loopTl.to('.typing-text', {
+        duration: 0.5,
+        text: queries[queryIndex],
+        ease: 'none',
+      })
+      .fromTo('.result-row', 
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, stagger: 0.1, duration: 0.35, ease: 'power2.out' }, '+=0.1')
+      .to({}, { duration: 2.2 })
+      .to('.result-row', {
+        opacity: 0,
+        y: -6,
+        stagger: 0.07,
+        duration: 0.25,
+      })
+      .to('.typing-text', {
+        duration: 0.25,
+        text: '',
+        ease: 'none',
+      })
+      .to({}, { duration: 0.4 });
+
+      return loopTl;
+    }
+
+    setTimeout(() => runTypingLoop(), 1600);
   }, { scope: container });
 
   return (
     <div id="cover" className="flex flex-col w-full bg-[var(--bg-base)]">
-      <div ref={container} className="relative min-h-screen w-full overflow-hidden bg-[var(--bg-base)] p-6 md:p-12 font-sans">
-      
-      {/* Top Left: Massive Searchify Text & Subhead */}
-      <div className="absolute top-12 left-6 md:left-12 max-w-[90vw] md:max-w-[75vw] z-10 pointer-events-none">
-        <h1 className="text-[12vh] sm:text-[18vh] md:text-[22vh] leading-[0.85] font-extrabold tracking-tighter mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500 pointer-events-auto">
-          <InteractiveText text="SEARCHIFY" />
-        </h1>
-        <p className="subhead text-xl md:text-3xl text-[var(--text-secondary)] max-w-2xl font-light pointer-events-auto">
-          Find the right creator, fast. A powerful dashboard to filter, analyze, and build your perfect influencer shortlist.
-        </p>
-      </div>
-
-      {/* Bottom Left: Framer Motion Explore Button */}
-      <div className="absolute top-[75vh] md:top-auto md:bottom-12 left-6 md:left-12 z-20">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="cta-button px-8 py-4 rounded-xl font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-[0_0_40px_rgba(168,85,247,0.4)] hover:shadow-[0_0_60px_rgba(168,85,247,0.6)] border border-white/10 text-lg flex items-center gap-3"
-          onClick={() => navigate('/dashboard')}
-        >
-          Explore the product <Search className="w-5 h-5" />
-        </motion.button>
-      </div>
-
-      {/* Bottom Right: Draggable Insta UI Interaction Tool */}
-      <div 
-        ref={toolRef} 
-        className="insta-tool hidden md:block absolute bottom-12 right-6 md:right-12 z-30 cursor-grab active:cursor-grabbing w-72 md:w-80 bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-opacity-80"
-        style={{ touchAction: 'none' }} // Required for GSAP Draggable on touch devices
-      >
-        <div className="p-4 border-b border-[var(--border)] flex items-center gap-3 bg-[var(--bg-elevated)]">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 p-[2px]">
-            <div className="w-full h-full bg-[var(--bg-surface)] rounded-full border border-[var(--border)] flex items-center justify-center text-xs font-bold text-white">S</div>
-          </div>
-          <div>
-            <div className="text-sm font-bold text-[var(--text-primary)]">@searchify_app</div>
-            <div className="text-xs text-[var(--text-muted)]">Sponsored</div>
-          </div>
-        </div>
+      <div ref={container} className="relative w-full min-h-screen overflow-hidden flex flex-col items-center pt-[8vh] md:pt-[10vh] px-4">
         
-        <div className="h-48 w-full bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex flex-col items-center justify-center relative overflow-hidden pointer-events-none">
-           <Search className="w-12 h-12 text-[var(--accent)] mb-2 animate-pulse" />
-           <div className="text-[var(--text-primary)] font-display font-bold">Try dragging me!</div>
-        </div>
+        {/* TEXT CONTAINER */}
+        <div className="flex flex-col w-full max-w-5xl z-10 pointer-events-none">
+          {/* SEARCH centered */}
+          <div className="flex justify-center w-full">
+            <h1 className="text-[#f0f0ff] uppercase pointer-events-auto" style={{
+              fontFamily: 'var(--font-display)',
+              fontWeight: 900,
+              fontSize: 'clamp(56px, 12vw, 160px)',
+              lineHeight: 0.92,
+              letterSpacing: '-0.04em',
+            }}>
+              <InteractiveText text="SEARCH" />
+            </h1>
+          </div>
 
-        <div className="p-4 bg-[var(--bg-base)]">
-          <div className="flex gap-4 mb-3">
-            <Heart className="w-6 h-6 text-[var(--text-primary)] hover:text-pink-500 transition-colors" />
-            <MessageCircle className="w-6 h-6 text-[var(--text-primary)] hover:text-blue-500 transition-colors" />
-            <div className="flex-1"></div>
-            <Bookmark className="w-6 h-6 text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors" />
-          </div>
-          <div className="text-sm font-bold text-[var(--text-primary)] mb-1">1,337 likes</div>
-          <div className="text-sm text-[var(--text-secondary)]">
-            <span className="font-bold text-[var(--text-primary)] mr-2">searchify_app</span>
-            Find your next big creator in seconds. 🚀
+          {/* LOWER SECTION: IFY (Right) and UI Interaction Tool (Left) */}
+          <div className="flex w-full mt-[-2%] flex-col md:flex-row-reverse">
+            
+            {/* Right side: IFY */}
+            <div className="w-full md:w-1/2 flex flex-col items-center md:items-start pl-0 md:pl-10">
+              <style>{`
+                .ify-text .letter {
+                  background-image: linear-gradient(to right, #c084fc, #3b82f6);
+                  background-size: 300% 100%;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  background-clip: text;
+                  color: transparent;
+                }
+                .ify-text .letter:nth-child(1) { background-position: 0% 0%; }
+                .ify-text .letter:nth-child(2) { background-position: 50% 0%; }
+                .ify-text .letter:nth-child(3) { background-position: 100% 0%; }
+              `}</style>
+              <h1 className="ify-text uppercase pointer-events-auto" style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 900,
+                fontSize: 'clamp(56px, 12vw, 160px)',
+                lineHeight: 0.92,
+                letterSpacing: '-0.04em',
+              }}>
+                <InteractiveText text="IFY" />
+              </h1>
+
+              {/* Text & CTA button below IFY */}
+              <div className="mt-8 md:mt-12 flex flex-col items-center md:items-start pointer-events-auto w-full max-w-lg">
+                 <div className="text-[#a0a0b8] font-sans font-light text-lg md:text-[22px] text-center md:text-left leading-snug tracking-wide flex flex-col items-center md:items-start gap-1">
+                   <BlindsTextReveal delay={1.4}>
+                     Search across <span className="text-[#f0f0ff] font-medium">Instagram</span>, <span className="text-[#f0f0ff] font-medium">YouTube</span> and <span className="text-[#f0f0ff] font-medium">TikTok</span> in one place.
+                   </BlindsTextReveal>
+                   <BlindsTextReveal delay={1.5}>
+                     Save creators and build campaigns.
+                   </BlindsTextReveal>
+                 </div>
+                 
+                 <div className="mt-10 md:mt-14 w-full flex flex-col sm:flex-row items-center md:justify-start gap-6">
+                   <motion.button
+                     onClick={() => navigate('/dashboard')}
+                     className="relative group px-8 py-4 rounded-full font-medium text-[16px] text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-[0_0_40px_rgba(124,58,237,0.4)] flex items-center justify-center gap-3 border border-[rgba(255,255,255,0.1)] cursor-pointer w-full sm:w-auto overflow-hidden"
+                     whileHover={{ scale: 1.03 }}
+                     whileTap={{ scale: 0.97 }}
+                     transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                   >
+                     <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" />
+                     <span className="relative z-10 font-display tracking-wide font-bold">Explore Dashboard</span>
+                     <motion.div 
+                       className="relative z-10 flex items-center justify-center"
+                       initial={{ x: 0 }}
+                       whileHover={{ x: 6 }}
+                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                     >
+                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                     </motion.div>
+                   </motion.button>
+
+                   {/* Secondary visual element */}
+                   <div className="hidden sm:flex items-center gap-3 pl-2 border-l border-[rgba(255,255,255,0.1)]">
+                     <div className="flex -space-x-2">
+                       <div className="w-9 h-9 rounded-full border-2 border-[var(--bg-base)] bg-[#e1306c] flex items-center justify-center shadow-md">
+                         <SiInstagram className="w-4 h-4 text-white" />
+                       </div>
+                       <div className="w-9 h-9 rounded-full border-2 border-[var(--bg-base)] bg-[#ff0000] flex items-center justify-center shadow-md">
+                         <SiYoutube className="w-4 h-4 text-white" />
+                       </div>
+                       <div className="w-9 h-9 rounded-full border-2 border-[var(--bg-base)] bg-[#69c9d0] flex items-center justify-center shadow-md">
+                         <SiTiktok className="w-4 h-4 text-white" />
+                       </div>
+                     </div>
+                     <div className="flex flex-col">
+                       <span className="text-[11px] text-[#f0f0ff] font-bold tracking-wider uppercase">Multi-Platform</span>
+                       <span className="text-[10px] text-[var(--text-muted)] font-mono uppercase">Unified Search</span>
+                     </div>
+                   </div>
+                 </div>
+              </div>
+            </div>
+
+            {/* Left side: Mockup Tool positioned below SEARCH */}
+            <div className="w-full md:w-1/2 flex justify-center md:justify-end pr-0 md:pr-10 pt-20 md:pt-16 pointer-events-auto relative z-30">
+              {/* SEARCH MOCKUP CARD (DRAGGABLE) */}
+              <div 
+                ref={toolRef} 
+                className="search-mockup-card cursor-grab active:cursor-grabbing w-[90%] md:w-full max-w-[420px]"
+                style={{ 
+                  touchAction: 'none',
+                  background: 'rgba(26, 26, 36, 0.95)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '20px',
+                  padding: '20px',
+                  boxShadow: '0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px rgba(124,58,237,0.12)'
+                }}
+              >
+                {/* Header */}
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-[#7c3aed] rounded-full flex items-center justify-center text-xs font-bold text-white font-[Inter]">S</div>
+                  <div className="flex flex-col">
+                    <span className="text-[13px] font-bold text-white font-[Inter]">@searchify</span>
+                    <span className="text-[11px] text-[#4a4a6a] font-[Inter]">Influencer Search</span>
+                  </div>
+                  <div className="ml-auto text-[#4a4a6a] text-lg leading-none tracking-widest">&middot;&middot;&middot;</div>
+                </div>
+
+                {/* Search bar */}
+                <div className="mt-4 w-full h-[44px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-[10px] flex items-center gap-[10px] px-[14px]">
+                  <Search size={16} color="#4a4a6a" />
+                  <span className="typing-text text-[14px] text-white font-[Inter]"></span>
+                  <span className="cursor" style={{ animation: 'blink 1s step-end infinite', color: '#7c3aed' }}>|</span>
+                </div>
+
+                {/* Results */}
+                <div className="mt-3 flex flex-col gap-[2px]">
+                  <div className="result-row px-3 py-2.5 rounded-[10px] flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full p-[2px]" style={{ background: 'linear-gradient(45deg, #f09433, #e6683c, #dc2743, #bc1888)' }}>
+                      <div className="w-full h-full bg-[#1a1a24] rounded-full"></div>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="text-[13px] font-bold text-[#f0f0ff] font-[Inter]">@cristiano</div>
+                      <div className="text-[12px] text-[#4a4a6a] font-[Inter] flex items-center">
+                        Cristiano Ronaldo 
+                        <span className="text-[10px] px-2 py-0.5 rounded-full ml-2" style={{ background: 'rgba(225,48,108,0.15)', color: '#e1306c' }}>Instagram</span>
+                      </div>
+                    </div>
+                    <div className="text-[12px] text-[#4a4a6a] font-[Inter] ml-auto">641.3M</div>
+                  </div>
+
+                  <div className="result-row px-3 py-2.5 rounded-[10px] flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full p-[2px]" style={{ background: '#ff0000' }}>
+                      <div className="w-full h-full bg-[#1a1a24] rounded-full"></div>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="text-[13px] font-bold text-[#f0f0ff] font-[Inter]">@mrbeast</div>
+                      <div className="text-[12px] text-[#4a4a6a] font-[Inter] flex items-center">
+                        MrBeast 
+                        <span className="text-[10px] px-2 py-0.5 rounded-full ml-2" style={{ background: 'rgba(255,0,0,0.15)', color: '#ff0000' }}>YouTube</span>
+                      </div>
+                    </div>
+                    <div className="text-[12px] text-[#4a4a6a] font-[Inter] ml-auto">312.0M</div>
+                  </div>
+
+                  <div className="result-row px-3 py-2.5 rounded-[10px] flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full p-[2px]" style={{ background: '#69c9d0' }}>
+                      <div className="w-full h-full bg-[#1a1a24] rounded-full"></div>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="text-[13px] font-bold text-[#f0f0ff] font-[Inter]">@selenagomez</div>
+                      <div className="text-[12px] text-[#4a4a6a] font-[Inter] flex items-center">
+                        Selena Gomez 
+                        <span className="text-[10px] px-2 py-0.5 rounded-full ml-2" style={{ background: 'rgba(105,201,208,0.15)', color: '#69c9d0' }}>TikTok</span>
+                      </div>
+                    </div>
+                    <div className="text-[12px] text-[#4a4a6a] font-[Inter] ml-auto">423.9M</div>
+                  </div>
+                </div>
+
+                <div className="text-center font-[Inter] text-[11px] text-[#4a4a6a] mt-3.5 pt-3.5 border-t border-[rgba(255,255,255,0.06)]">
+                  30 creators across 3 platforms
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
-      </div>
       </div>
       
-      {/* Connect Features Page directly below for continuous scrolling */}
       <div id="features">
         <FeaturesPage />
       </div>
