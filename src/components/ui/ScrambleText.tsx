@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useInView, animate } from "framer-motion";
 
 const HIDDEN = 0;

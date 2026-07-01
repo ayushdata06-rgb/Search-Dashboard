@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/dist/SplitText";
@@ -7,14 +7,14 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { TextPlugin } from "gsap/dist/TextPlugin";
 import { Music, Check, Search, X } from 'lucide-react';
 import { SiInstagram as Instagram, SiYoutube as Youtube } from 'react-icons/si';
-import { motion } from 'framer-motion';
+
 import { ScrambleText } from '@/components/ui/ScrambleText';
 import { HoverAreaScramble } from '@/components/ui/HoverAreaScramble';
 gsap.registerPlugin(SplitText, ScrollTrigger, TextPlugin);
 
 export function FeaturesPage() {
   const container = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+
 
   useGSAP(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
