@@ -1,62 +1,95 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { Platform } from '@/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
-import { PlatformFilter } from '@/components/influencer/PlatformFilter';
-import { SearchBar } from '@/components/influencer/SearchBar';
+import { SearchDropdown } from '@/components/influencer/SearchDropdown';
 import { InfluencerGrid } from '@/components/influencer/InfluencerGrid';
-import { useInfluencerSearch } from '@/hooks/useInfluencerSearch';
+import { Pagination } from '@/components/ui/Pagination';
+import { PlatformBox } from '@/components/influencer/PlatformBox';
+import { useGlobalSearch } from '@/hooks/useGlobalSearch';
+import { useListStore } from '@/store/useListStore';
+
 export function DashboardPage() {
-  const [platform, setPlatform] = useState<Platform>('instagram');
-  const [searchQuery, setSearchQuery] = useState('');
+  const { data: allProfiles, loading } = useGlobalSearch();
+  const featuredPage = useListStore((s) => s.featuredPage);
+  const setFeaturedPage = useListStore((s) => s.setFeaturedPage);
+  const shuffledCreators = useListStore((s) => s.shuffledCreators);
+  const setShuffledCreators = useListStore((s) => s.setShuffledCreators);
 
-  const { data: allProfiles, loading } = useInfluencerSearch(platform);
+  // Shuffle creators on mount if we haven't already
+  useEffect(() => {
+    if (!loading && allProfiles.length > 0 && shuffledCreators.length === 0) {
+      const shuffled = [...allProfiles].sort(() => Math.random() - 0.5);
+      setShuffledCreators(shuffled);
+    }
+  }, [loading, allProfiles, shuffledCreators.length, setShuffledCreators]);
 
-  const filtered = useMemo(() => {
-    if (!searchQuery) return allProfiles;
-    const q = searchQuery.toLowerCase();
-    return allProfiles.filter((p) => {
-      const username = (p.username ?? p.handle ?? p.custom_name ?? '').toLowerCase();
-      const fullname = p.fullname.toLowerCase();
-      return username.includes(q) || fullname.includes(q);
-    });
-  }, [allProfiles, searchQuery]);
+  // Use shuffled creators if available, else fallback to allProfiles (during first load)
+  const displayProfiles = shuffledCreators.length > 0 ? shuffledCreators : allProfiles;
 
-  const handlePlatformChange = (p: Platform) => {
-    setPlatform(p);
-    setSearchQuery('');
-  };
+  // Pagination logic
+  const itemsPerPage = 6;
+  const currentProfiles = useMemo(() => {
+    const start = (featuredPage - 1) * itemsPerPage;
+    return displayProfiles.slice(start, start + itemsPerPage);
+  }, [displayProfiles, featuredPage]);
 
   return (
     <PageWrapper>
-      <div className="mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold font-display text-[var(--text-primary)] tracking-tight mb-2">
-          Find Influencers
+      {/* 1. HEADING */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold font-display text-white tracking-tight mb-2">
+          Find Your Influencer
         </h1>
-        <p className="text-[var(--text-secondary)]">
-          Browse top creators across social platforms
+        <p className="text-[var(--text-muted)]">
+          Search across Instagram, YouTube and TikTok in one place
         </p>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-        <PlatformFilter selected={platform} onChange={handlePlatformChange} />
-        <div className="flex-1 w-full sm:w-auto">
-          <SearchBar
-            value={searchQuery}
-            onChange={setSearchQuery}
-            resultCount={searchQuery ? filtered.length : undefined}
-          />
+      {/* 2. GLOBAL SEARCH BAR */}
+      <div className="mb-12">
+        <SearchDropdown />
+      </div>
+
+      {/* 3. BROWSE BY PLATFORM */}
+      <div className="mb-12">
+        <h2 className="text-xs tracking-widest uppercase text-[var(--text-muted)] mb-4 font-bold">
+          Browse by Platform
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <PlatformBox platform="instagram" creatorCount={10} />
+          <PlatformBox platform="youtube" creatorCount={10} />
+          <PlatformBox platform="tiktok" creatorCount={10} />
         </div>
       </div>
 
-      <p className="text-xs text-[var(--text-muted)] mb-4">
-        Showing {filtered.length} of {allProfiles.length} on {platform}
-      </p>
+      {/* 4. FEATURED CREATORS GRID */}
+      <div>
+        <h2 className="text-xs tracking-widest uppercase text-[var(--text-muted)] mb-4 font-bold">
+          Featured Creators
+        </h2>
+        
+        <InfluencerGrid
+          profiles={currentProfiles}
+          // The grid expects a single platform for the key stagger, but these are mixed.
+          // We pass a dummy 'all' or just the first item's platform as a workaround if required,
+          // but let's pass a special 'mixed' string if the types allow it. Actually InfluencerGrid
+          // expects Platform type ('instagram'|'youtube'|'tiktok'). Let's update InfluencerGrid 
+          // to accept Platform | 'mixed'.
+          platform={'instagram'} // Just passing a default since InfluencerGrid expects a valid Platform for the Skeleton key
+          loading={loading && shuffledCreators.length === 0}
+          currentPage={featuredPage}
+        />
 
-      <InfluencerGrid
-        profiles={filtered}
-        platform={platform}
-        loading={loading}
-      />
+        {!loading && displayProfiles.length > 0 && (
+          <Pagination
+            currentPage={featuredPage}
+            totalItems={displayProfiles.length}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setFeaturedPage}
+            label="featured creators"
+          />
+        )}
+      </div>
     </PageWrapper>
   );
 }

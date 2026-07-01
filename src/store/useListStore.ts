@@ -8,6 +8,14 @@ interface ListState {
   removeProfile: (username: string) => void;
   isInList: (username: string) => boolean;
   clearList: () => void;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  featuredPage: number;
+  setFeaturedPage: (page: number) => void;
+  platformPages: Record<string, number>;
+  setPlatformPage: (platform: string, page: number) => void;
+  shuffledCreators: InfluencerSummary[];
+  setShuffledCreators: (creators: InfluencerSummary[]) => void;
 }
 
 export const useListStore = create<ListState>()(
@@ -25,6 +33,15 @@ export const useListStore = create<ListState>()(
       isInList: (username) =>
         get().savedProfiles.some((p) => p.username === username),
       clearList: () => set({ savedProfiles: [] }),
+      currentPage: 1,
+      setCurrentPage: (page) => set({ currentPage: page }),
+      featuredPage: 1,
+      setFeaturedPage: (page) => set({ featuredPage: page }),
+      platformPages: {},
+      setPlatformPage: (platform, page) =>
+        set((state) => ({ platformPages: { ...state.platformPages, [platform]: page } })),
+      shuffledCreators: [],
+      setShuffledCreators: (creators) => set({ shuffledCreators: creators }),
     }),
     { name: 'wobb-saved-list' }
   )
