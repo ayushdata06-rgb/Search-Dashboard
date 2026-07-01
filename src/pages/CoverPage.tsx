@@ -71,7 +71,7 @@ export function CoverPage() {
       </div>
 
       {/* Bottom Left: Framer Motion Explore Button */}
-      <div className="absolute bottom-12 left-6 md:left-12 z-20">
+      <div className="absolute top-[75vh] md:top-auto md:bottom-12 left-6 md:left-12 z-20">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -85,7 +85,7 @@ export function CoverPage() {
       {/* Bottom Right: Draggable Insta UI Interaction Tool */}
       <div 
         ref={toolRef} 
-        className="insta-tool absolute bottom-12 right-6 md:right-12 z-30 cursor-grab active:cursor-grabbing w-72 md:w-80 bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-opacity-80"
+        className="insta-tool hidden md:block absolute bottom-12 right-6 md:right-12 z-30 cursor-grab active:cursor-grabbing w-72 md:w-80 bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl bg-opacity-80"
         style={{ touchAction: 'none' }} // Required for GSAP Draggable on touch devices
       >
         <div className="p-4 border-b border-[var(--border)] flex items-center gap-3 bg-[var(--bg-elevated)]">

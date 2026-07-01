@@ -175,15 +175,7 @@ export function FeaturesPage() {
           ))}
         </div>
 
-        <div className="mt-40 text-center flex flex-col items-center">
-          <h2 className="text-3xl font-bold mb-8">Wondering how this was made?</h2>
-          <button
-            onClick={() => {}} // Redirects later
-            className="flex items-center gap-2 px-8 py-4 rounded-xl font-semibold bg-white text-black transition-colors shadow-xl hover:scale-105 active:scale-95 duration-200"
-          >
-            ℹ️ Info
-          </button>
-        </div>
+
       </div>
     </div>
   );

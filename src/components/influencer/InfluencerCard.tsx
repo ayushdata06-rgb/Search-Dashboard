@@ -95,7 +95,7 @@ export const InfluencerCard = memo(function InfluencerCard({
         </div>
       </div>
 
-      <div className="flex items-center gap-4 mb-4 text-sm">
+      <div className="flex items-center flex-wrap gap-4 mb-4 text-sm">
         <div>
           <span className="font-mono font-semibold text-[var(--text-primary)]">
             {formatCompact(profile.followers)}

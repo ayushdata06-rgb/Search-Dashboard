@@ -226,7 +226,7 @@ export function ProfilePage() {
           >
             <h3 className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-6">Analytics</h3>
             
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               <div className="bg-[#111118] p-4 rounded-xl border border-white/5">
                 <div className="text-xs text-[var(--text-muted)] mb-1">Engagement Rate</div>
                 <div className="text-xl font-bold text-green-400">{formatEngagementRate(user.engagement_rate ?? 0)}</div>
@@ -250,14 +250,14 @@ export function ProfilePage() {
               <div className="text-sm font-medium text-white mb-4">Engagement Comparison</div>
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-32 text-xs text-[var(--text-secondary)]">Their engagement</div>
+                  <div className="w-24 sm:w-32 shrink-0 text-xs text-[var(--text-secondary)]">Their engagement</div>
                   <div className="flex-1 h-3 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-purple-500 rounded-full" style={{ width: '82%' }}></div>
                   </div>
                   <div className="w-12 text-xs font-bold text-white text-right">{formatEngagementRate(user.engagement_rate ?? 0)}</div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="w-32 text-xs text-[var(--text-secondary)]">Platform average</div>
+                  <div className="w-24 sm:w-32 shrink-0 text-xs text-[var(--text-secondary)]">Platform average</div>
                   <div className="flex-1 h-3 bg-white/5 rounded-full overflow-hidden">
                     <div className="h-full bg-white/20 rounded-full" style={{ width: '35%' }}></div>
                   </div>

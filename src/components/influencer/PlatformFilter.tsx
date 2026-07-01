@@ -31,7 +31,7 @@ const platformBg: Record<Platform, string> = {
 
 export function PlatformFilter({ selected, onChange }: PlatformFilterProps) {
   return (
-    <div className="flex gap-1 p-1 rounded-xl bg-[var(--bg-surface)] border border-[var(--border)] w-fit">
+    <div className="flex gap-1 p-1 rounded-xl bg-[var(--bg-surface)] border border-[var(--border)] w-full sm:w-fit overflow-x-auto">
       {PLATFORMS.map((p) => {
         const isActive = selected === p;
         return (
