@@ -22,7 +22,7 @@ export function InteractiveText({ text, className = '' }: InteractiveTextProps) 
     if (prefersReducedMotion || !isHoverable) {
       // Do nothing extra for touch devices or reduced-motion.
       // The text renders statically and won't attach mousemove listeners.
-      return; 
+      return;
     }
 
     const container = containerRef.current;
@@ -41,25 +41,43 @@ export function InteractiveText({ text, className = '' }: InteractiveTextProps) 
       };
     });
 
-    // 3. Animation Logic & Math
-    // The maxDistance defines the radius of the "bubble" around the cursor.
-    const maxDistance = 200; 
+    let letterCenters: { x: number; y: number }[] = [];
+    const updateCenters = () => {
+      letterCenters = lettersRef.current.map((el) => {
+        if (!el) return { x: 0, y: 0 };
+        const rect = el.getBoundingClientRect();
+        return {
+          x: rect.left + rect.width / 2 + window.scrollX,
+          y: rect.top + rect.height / 2 + window.scrollY,
+        };
+      });
+    };
+
+    // Calculate initial positions
+    updateCenters();
+
+    // Recalculate only on window resize, debounced
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateCenters, 250);
+    };
+    window.addEventListener('resize', handleResize);
+
+    const maxDistance = 200;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
+      const mouseX = e.pageX;
+      const mouseY = e.pageY;
 
       lettersRef.current.forEach((el, index) => {
         if (!el) return;
         const setters = letterSetters[index];
         if (!setters) return;
 
-        // Get the absolute center of the letter on the screen
-        const letterRect = el.getBoundingClientRect();
-        const letterCenterX = letterRect.left + letterRect.width / 2;
-        const letterCenterY = letterRect.top + letterRect.height / 2;
+        const letterCenterX = letterCenters[index]?.x || 0;
+        const letterCenterY = letterCenters[index]?.y || 0;
 
-        // Calculate distance from mouse to letter center using Pythagorean theorem
         const dx = mouseX - letterCenterX;
         const dy = mouseY - letterCenterY;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -72,7 +90,7 @@ export function InteractiveText({ text, className = '' }: InteractiveTextProps) 
         // Multiply by base factors to determine how extreme the effect gets
         setters.y(-60 * intensity); // Move up to 60px up
         setters.scale(1 + 0.6 * intensity); // Scale up to 1.6x
-        
+
         // Add a slight rotation depending on which side the mouse is on
         const rotateDir = dx > 0 ? -1 : 1;
         setters.rotate(25 * intensity * rotateDir);
@@ -95,6 +113,7 @@ export function InteractiveText({ text, className = '' }: InteractiveTextProps) 
     return () => {
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', handleResize);
     };
   }, { scope: containerRef });
 

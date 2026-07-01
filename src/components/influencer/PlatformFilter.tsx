@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Camera, Play, Music } from 'lucide-react';
 import type { Platform } from '@/types';
 import { cn } from '@/utils/cn';
 import { getPlatformLabel } from '@/utils/formatters';
@@ -10,37 +11,53 @@ interface PlatformFilterProps {
 
 const PLATFORMS: Platform[] = ['instagram', 'youtube', 'tiktok'];
 
+const platformIcons: Record<Platform, React.ReactNode> = {
+  instagram: <Camera className="w-4 h-4" />,
+  youtube: <Play className="w-4 h-4" />,
+  tiktok: <Music className="w-4 h-4" />,
+};
+
 const platformStyles: Record<Platform, string> = {
   instagram: 'text-[var(--insta)]',
   youtube: 'text-[var(--youtube)]',
   tiktok: 'text-[var(--tiktok)]',
 };
 
+const platformBg: Record<Platform, string> = {
+  instagram: 'bg-[var(--insta)]',
+  youtube: 'bg-[var(--youtube)]',
+  tiktok: 'bg-[var(--tiktok)]',
+};
+
 export function PlatformFilter({ selected, onChange }: PlatformFilterProps) {
   return (
     <div className="flex gap-1 p-1 rounded-xl bg-[var(--bg-surface)] border border-[var(--border)] w-fit">
-      {PLATFORMS.map((p) => (
-        <button
-          key={p}
-          type="button"
-          onClick={() => onChange(p)}
-          className={cn(
-            'relative px-5 py-2.5 rounded-lg text-sm font-medium transition-colors z-10',
-            selected === p
-              ? platformStyles[p]
-              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-          )}
-        >
-          {selected === p && (
-            <motion.div
-              layoutId="platform-indicator"
-              className="absolute inset-0 rounded-lg bg-gradient-to-r from-[var(--accent)]/20 to-[var(--accent-secondary)]/20 border border-[var(--accent)]/30 shadow-[inset_0_0_10px_rgba(147,51,234,0.1)]"
-              transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-            />
-          )}
-          <span className="relative z-10">{getPlatformLabel(p)}</span>
-        </button>
-      ))}
+      {PLATFORMS.map((p) => {
+        const isActive = selected === p;
+        return (
+          <button
+            key={p}
+            type="button"
+            onClick={() => onChange(p)}
+            className={cn(
+              'relative flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors z-10',
+              isActive
+                ? `${platformStyles[p]} opacity-100`
+                : `${platformStyles[p]} opacity-40 hover:opacity-100`
+            )}
+          >
+            {platformIcons[p]}
+            <span className="relative z-10">{getPlatformLabel(p)}</span>
+            {isActive && (
+              <motion.div
+                layoutId="tab-indicator"
+                className={cn('absolute bottom-0 left-0 right-0 h-[2px] rounded-full', platformBg[p])}
+                transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+              />
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }

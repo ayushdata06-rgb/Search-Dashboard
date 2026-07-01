@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { X, Trash2, UserPlus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, UserPlus } from 'lucide-react';
 import { useListStore } from '@/store/useListStore';
 import { SavedListItem } from './SavedListItem';
 
@@ -50,15 +50,7 @@ export function SavedListPanel({ onClose }: SavedListPanelProps) {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            {savedProfiles.length > 0 && (
-              <button
-                onClick={clearList}
-                className="p-2 rounded-lg text-[var(--text-muted)] hover:text-red-400 hover:bg-red-400/10 transition-colors"
-                aria-label="Clear all"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            )}
+
             <button
               onClick={onClose}
               className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] transition-colors"
@@ -83,23 +75,31 @@ export function SavedListPanel({ onClose }: SavedListPanelProps) {
             </div>
           ) : (
             <div className="space-y-1">
-              {savedProfiles.map((profile) => (
-                <SavedListItem
-                  key={profile.username}
-                  profile={profile}
-                  onRemove={handleRemove}
-                />
-              ))}
+              <AnimatePresence>
+                {savedProfiles.map((profile) => (
+                  <SavedListItem
+                    key={profile.username}
+                    profile={profile}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </AnimatePresence>
             </div>
           )}
         </div>
 
         {/* Footer */}
         {savedProfiles.length > 0 && (
-          <div className="p-4 border-t border-[var(--border)]">
-            <p className="text-xs text-[var(--text-muted)] text-center">
+          <div className="p-4 border-t border-[var(--border)] flex justify-between items-center">
+            <p className="text-xs text-[var(--text-muted)]">
               Share this list with your team
             </p>
+            <button
+              onClick={clearList}
+              className="text-xs text-red-500/80 hover:text-red-400 font-medium transition-colors"
+            >
+              Clear All
+            </button>
           </div>
         )}
       </motion.div>

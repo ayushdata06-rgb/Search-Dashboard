@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { List } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
@@ -8,6 +8,15 @@ import { SavedListPanel } from '@/components/list/SavedListPanel';
 export function Navbar() {
   const [panelOpen, setPanelOpen] = useState(false);
   const savedCount = useListStore((s) => s.savedProfiles.length);
+  const [isBouncing, setIsBouncing] = useState(false);
+
+  useEffect(() => {
+    if (savedCount > 0) {
+      setIsBouncing(true);
+      const timer = setTimeout(() => setIsBouncing(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [savedCount]);
 
   return (
     <>
@@ -18,7 +27,6 @@ export function Navbar() {
               <span aria-hidden="true">&larr;</span> Back to Searchify
             </Link>
             <div className="h-4 w-px bg-[var(--border)] hidden sm:block"></div>
-
           </div>
 
           <button
@@ -28,7 +36,7 @@ export function Navbar() {
             <List className="w-4 h-4" />
             <span className="hidden sm:inline">My List</span>
             {savedCount > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-[var(--accent)] text-white min-w-[20px] text-center">
+              <span className={`ml-1 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-[var(--accent)] text-white min-w-[20px] text-center ${isBouncing ? 'animate-bounce-badge' : ''}`}>
                 {savedCount}
               </span>
             )}

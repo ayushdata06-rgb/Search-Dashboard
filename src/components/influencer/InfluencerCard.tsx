@@ -2,6 +2,7 @@ import { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Check, BadgeCheck } from 'lucide-react';
+import toast from 'react-hot-toast';
 import type { Platform, UserProfileSummary } from '@/types';
 import { useListStore } from '@/store/useListStore';
 import { formatCompact, formatEngagementRate } from '@/utils/formatters';
@@ -14,6 +15,12 @@ interface InfluencerCardProps {
   index: number;
 }
 
+const platformHoverStyles: Record<Platform, string> = {
+  instagram: 'hover:shadow-[0_0_20px_rgba(217,70,239,0.3)] hover:border-fuchsia-500/50',
+  youtube: 'hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:border-red-500/50',
+  tiktok: 'hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:border-cyan-400/50',
+};
+
 export const InfluencerCard = memo(function InfluencerCard({
   profile,
   platform,
@@ -21,7 +28,6 @@ export const InfluencerCard = memo(function InfluencerCard({
 }: InfluencerCardProps) {
   const navigate = useNavigate();
   const addProfile = useListStore((s) => s.addProfile);
-  const removeProfile = useListStore((s) => s.removeProfile);
   const isInList = useListStore((s) => s.isInList(profile.username ?? profile.user_id));
 
   const displayUsername = profile.username ?? profile.handle ?? profile.custom_name ?? profile.user_id;
@@ -33,10 +39,8 @@ export const InfluencerCard = memo(function InfluencerCard({
   const handleToggleList = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
-      const key = profile.username ?? profile.user_id;
-      if (isInList) {
-        removeProfile(key);
-      } else {
+      if (!isInList) {
+        const key = profile.username ?? profile.user_id;
         addProfile({
           username: key,
           fullName: profile.fullname,
@@ -46,19 +50,20 @@ export const InfluencerCard = memo(function InfluencerCard({
           avatarUrl: profile.picture,
           isVerified: profile.is_verified,
         });
+        toast.success(`@${displayUsername} added to your list`);
       }
     },
-    [profile, platform, isInList, addProfile, removeProfile]
+    [profile, platform, isInList, addProfile, displayUsername]
   );
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, delay: index * 0.05 }}
-      whileHover={{ y: -4, scale: 1.01 }}
       onClick={handleClick}
-      className="card p-5 cursor-pointer group"
+      className={`card p-5 cursor-pointer group transition-all duration-300 hover:-translate-y-[6px] ${platformHoverStyles[platform]}`}
     >
       <div className="flex items-center gap-4 mb-3">
         <Avatar
@@ -114,16 +119,17 @@ export const InfluencerCard = memo(function InfluencerCard({
         <div className="flex-1" />
         <button
           onClick={handleToggleList}
+          disabled={isInList}
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             isInList
-              ? 'bg-[var(--success)]/15 text-[var(--success)] border border-[var(--success)]/20'
+              ? 'bg-green-500/15 text-green-500 border border-green-500/20 cursor-not-allowed'
               : 'bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 hover:bg-[var(--accent)]/20'
           }`}
         >
           {isInList ? (
             <>
               <Check className="w-3.5 h-3.5" />
-              In List
+              Added
             </>
           ) : (
             <>

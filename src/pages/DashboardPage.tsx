@@ -5,24 +5,21 @@ import { PlatformFilter } from '@/components/influencer/PlatformFilter';
 import { SearchBar } from '@/components/influencer/SearchBar';
 import { InfluencerGrid } from '@/components/influencer/InfluencerGrid';
 import { useInfluencerSearch } from '@/hooks/useInfluencerSearch';
-import { useDebounce } from '@/hooks/useDebounce';
-
 export function DashboardPage() {
   const [platform, setPlatform] = useState<Platform>('instagram');
   const [searchQuery, setSearchQuery] = useState('');
-  const debouncedQuery = useDebounce(searchQuery, 300);
 
   const { data: allProfiles, loading } = useInfluencerSearch(platform);
 
   const filtered = useMemo(() => {
-    if (!debouncedQuery) return allProfiles;
-    const q = debouncedQuery.toLowerCase();
+    if (!searchQuery) return allProfiles;
+    const q = searchQuery.toLowerCase();
     return allProfiles.filter((p) => {
       const username = (p.username ?? p.handle ?? p.custom_name ?? '').toLowerCase();
       const fullname = p.fullname.toLowerCase();
       return username.includes(q) || fullname.includes(q);
     });
-  }, [allProfiles, debouncedQuery]);
+  }, [allProfiles, searchQuery]);
 
   const handlePlatformChange = (p: Platform) => {
     setPlatform(p);
@@ -46,7 +43,7 @@ export function DashboardPage() {
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            resultCount={debouncedQuery ? filtered.length : undefined}
+            resultCount={searchQuery ? filtered.length : undefined}
           />
         </div>
       </div>
