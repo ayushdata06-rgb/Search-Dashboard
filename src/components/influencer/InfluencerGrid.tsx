@@ -8,9 +8,10 @@ interface InfluencerGridProps {
   profiles: UserProfileSummary[];
   platform: Platform;
   loading: boolean;
+  currentPage: number;
 }
 
-export function InfluencerGrid({ profiles, platform, loading }: InfluencerGridProps) {
+export function InfluencerGrid({ profiles, platform, loading, currentPage }: InfluencerGridProps) {
   return (
     <AnimatePresence mode="wait">
       {loading ? (
@@ -22,7 +23,7 @@ export function InfluencerGrid({ profiles, platform, loading }: InfluencerGridPr
           transition={{ duration: 0.2 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         >
-          {Array.from({ length: 9 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </motion.div>
@@ -42,7 +43,7 @@ export function InfluencerGrid({ profiles, platform, loading }: InfluencerGridPr
         </motion.div>
       ) : (
         <motion.div
-          key={`grid-${platform}`}
+          key={`grid-${platform}-${currentPage}`}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           <AnimatePresence mode="popLayout">
