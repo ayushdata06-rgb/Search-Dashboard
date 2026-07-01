@@ -1,6 +1,7 @@
-import { Camera, Play, Music } from 'lucide-react';
+import { SiInstagram, SiYoutube, SiTiktok } from 'react-icons/si';
 import { useNavigate } from 'react-router-dom';
 import { PLATFORM_CONFIG, type Platform } from '@/types';
+import { useListStore } from '@/store/useListStore';
 
 interface PlatformBoxProps {
   platform: Platform;
@@ -10,21 +11,25 @@ interface PlatformBoxProps {
 export function PlatformBox({ platform, creatorCount = 10 }: PlatformBoxProps) {
   const navigate = useNavigate();
   const config = PLATFORM_CONFIG[platform];
+  const setPlatformPage = useListStore((s) => s.setPlatformPage);
 
   const getIcon = () => {
     switch (platform) {
       case 'instagram':
-        return <Camera size={32} color={config.color} />;
+        return <SiInstagram size={32} color={config.color} />;
       case 'youtube':
-        return <Play size={32} color={config.color} />;
+        return <SiYoutube size={32} color={config.color} />;
       case 'tiktok':
-        return <Music size={32} color={config.color} />;
+        return <SiTiktok size={32} color={config.color} />;
     }
   };
 
   return (
     <div
-      onClick={() => navigate(`/dashboard/${platform}`)}
+      onClick={() => {
+        setPlatformPage(platform, 1);
+        navigate(`/dashboard/${platform}`);
+      }}
       className="relative flex flex-col items-center justify-center p-7 rounded-[20px] bg-white/2 cursor-pointer group"
       style={{
         border: `1px solid ${config.borderColor}`,

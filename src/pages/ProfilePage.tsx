@@ -1,8 +1,9 @@
 import { useRef, useCallback, useEffect } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
-import { ArrowLeft, Check, Plus, BadgeCheck, Calendar, Tag, MapPin, ExternalLink, Link as LinkIcon } from 'lucide-react';
+import { Check, Plus, BadgeCheck, Calendar, Tag, MapPin, ExternalLink, Link as LinkIcon } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 import type { Platform } from '@/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
@@ -31,6 +32,7 @@ export function ProfilePage() {
     if (!user || !username) return;
     if (isInList) {
       removeProfile(username);
+      toast.error(`@${username} removed from your list`);
     } else {
       addProfile({
         username,
@@ -41,6 +43,7 @@ export function ProfilePage() {
         avatarUrl: user.picture,
         isVerified: user.is_verified,
       });
+      toast.success(`@${username} added to your list`);
     }
   }, [user, username, platform, isInList, addProfile, removeProfile]);
 
@@ -83,9 +86,6 @@ export function ProfilePage() {
   if (error || !user) {
     return (
       <PageWrapper>
-        <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-white transition-colors mb-6">
-          <ArrowLeft className="w-4 h-4" /> Back to search
-        </Link>
         <ErrorMessage message={error ?? 'Could not load profile'} />
       </PageWrapper>
     );
@@ -94,10 +94,7 @@ export function ProfilePage() {
   return (
     <PageWrapper>
       {/* 1. NAVBAR */}
-      <div className="flex items-center justify-between sticky top-0 z-10 bg-[var(--bg-base)]/80 backdrop-blur-md py-4 mb-6 border-b border-[var(--border)]">
-        <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-white transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back
-        </Link>
+      <div className="flex items-center justify-end sticky top-0 z-10 bg-[var(--bg-base)]/80 backdrop-blur-md py-4 mb-6 border-b border-[var(--border)]">
         
         <button
           onClick={handleToggleList}

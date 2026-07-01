@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+
 import { List } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { useListStore } from '@/store/useListStore';
@@ -21,13 +21,7 @@ export function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-40 w-full border-b border-[var(--border)] backdrop-blur-xl bg-[var(--bg-base)]/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link to="/" className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] flex items-center gap-1 transition-colors">
-              <span aria-hidden="true">&larr;</span> Back to Searchify
-            </Link>
-            <div className="h-4 w-px bg-[var(--border)] hidden sm:block"></div>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-end">
 
           <button
             onClick={() => setPanelOpen(true)}

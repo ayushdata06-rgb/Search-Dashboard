@@ -32,7 +32,6 @@ export function Pagination({
         <button
           onClick={() => {
             onPageChange(currentPage - 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           disabled={currentPage === 1}
           className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-white hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none transition-colors border border-transparent"
@@ -49,7 +48,6 @@ export function Pagination({
                 key={page}
                 onClick={() => {
                   onPageChange(page);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className={`relative px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                   isActive ? 'text-white' : 'text-[var(--text-muted)] hover:text-white border border-white/20'
@@ -71,7 +69,6 @@ export function Pagination({
         <button
           onClick={() => {
             onPageChange(currentPage + 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           disabled={currentPage === totalPages}
           className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-white hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none transition-colors border border-transparent"

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Camera, Play, Music } from 'lucide-react';
+import { SiInstagram, SiYoutube, SiTiktok } from 'react-icons/si';
 import type { Platform } from '@/types';
 import { cn } from '@/utils/cn';
 import { getPlatformLabel } from '@/utils/formatters';
@@ -12,9 +12,9 @@ interface PlatformFilterProps {
 const PLATFORMS: Platform[] = ['instagram', 'youtube', 'tiktok'];
 
 const platformIcons: Record<Platform, React.ReactNode> = {
-  instagram: <Camera className="w-4 h-4" />,
-  youtube: <Play className="w-4 h-4" />,
-  tiktok: <Music className="w-4 h-4" />,
+  instagram: <SiInstagram className="w-4 h-4" />,
+  youtube: <SiYoutube className="w-4 h-4" />,
+  tiktok: <SiTiktok className="w-4 h-4" />,
 };
 
 const platformStyles: Record<Platform, string> = {

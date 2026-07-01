@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Search, X, Camera, Play, Music } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { Search, X } from 'lucide-react';
+import { SiInstagram, SiYoutube, SiTiktok } from 'react-icons/si';
 import type { Platform, SearchData } from '@/types';
 import { PLATFORM_CONFIG } from '@/types';
 import { PageWrapper } from '@/components/layout/PageWrapper';
@@ -73,24 +74,17 @@ export function PlatformPage() {
   const getPlatformIcon = () => {
     switch (currentPlatform) {
       case 'instagram':
-        return <Camera size={18} color={config.color} />;
+        return <SiInstagram size={18} color={config.color} />;
       case 'youtube':
-        return <Play size={18} color={config.color} />;
+        return <SiYoutube size={18} color={config.color} />;
       case 'tiktok':
-        return <Music size={18} color={config.color} />;
+        return <SiTiktok size={18} color={config.color} />;
     }
   };
 
   return (
     <PageWrapper>
       <div className="mb-8">
-        <Link
-          to="/dashboard"
-          className="inline-flex items-center gap-1.5 text-sm text-[var(--text-secondary)] hover:text-white transition-colors mb-6"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Dashboard
-        </Link>
         <p className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-1">
           Searching across
         </p>

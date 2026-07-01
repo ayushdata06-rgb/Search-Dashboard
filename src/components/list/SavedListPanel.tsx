@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, UserPlus } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { useListStore } from '@/store/useListStore';
 import { SavedListItem } from './SavedListItem';
 
@@ -16,6 +17,7 @@ export function SavedListPanel({ onClose }: SavedListPanelProps) {
   const handleRemove = useCallback(
     (username: string) => {
       removeProfile(username);
+      toast.error(`@${username} removed from your list`);
     },
     [removeProfile]
   );
@@ -95,7 +97,10 @@ export function SavedListPanel({ onClose }: SavedListPanelProps) {
               Share this list with your team
             </p>
             <button
-              onClick={clearList}
+              onClick={() => {
+                clearList();
+                toast.error('All influencers removed from your list');
+              }}
               className="text-xs text-red-500/80 hover:text-red-400 font-medium transition-colors"
             >
               Clear All
