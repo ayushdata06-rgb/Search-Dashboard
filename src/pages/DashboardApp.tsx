@@ -7,10 +7,22 @@ const ProfilePage = lazy(() =>
   import('@/pages/ProfilePage').then((mod) => ({ default: mod.ProfilePage }))
 );
 
+const PlatformPage = lazy(() =>
+  import('@/pages/PlatformPage').then((mod) => ({ default: mod.PlatformPage }))
+);
+
 export function DashboardApp() {
   return (
     <Routes>
       <Route path="/" element={<DashboardPage />} />
+      <Route
+        path="/:platform"
+        element={
+          <Suspense fallback={<div className="min-h-screen bg-[var(--bg-base)] flex items-center justify-center"><Spinner size="lg" /></div>}>
+            <PlatformPage />
+          </Suspense>
+        }
+      />
       <Route
         path="/profile/:username"
         element={
