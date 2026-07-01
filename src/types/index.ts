@@ -93,7 +93,34 @@ export interface InfluencerSummary {
   fullName: string;
   platform: Platform;
   followers: number;
-  engagementRate: number;
+  engagement: number;
   avatarUrl: string;
   isVerified: boolean;
+  niche?: string;
 }
+
+export const PLATFORM_CONFIG: Record<Platform, {
+  label: string;
+  color: string;
+  glow: string;
+  borderColor: string;
+}> = {
+  instagram: {
+    label: 'Instagram',
+    color: '#e1306c',
+    glow: 'rgba(225,48,108,0.2)',
+    borderColor: 'rgba(225,48,108,0.3)',
+  },
+  youtube: {
+    label: 'YouTube', 
+    color: '#ff0000',
+    glow: 'rgba(255,0,0,0.2)',
+    borderColor: 'rgba(255,0,0,0.3)',
+  },
+  tiktok: {
+    label: 'TikTok',
+    color: '#69c9d0',
+    glow: 'rgba(105,201,208,0.2)',
+    borderColor: 'rgba(105,201,208,0.3)',
+  },
+};

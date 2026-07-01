@@ -3,23 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Check, BadgeCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
-import type { Platform, UserProfileSummary } from '@/types';
-import { useListStore } from '@/store/useListStore';
-import { formatCompact, formatEngagementRate } from '@/utils/formatters';
-import { Avatar } from '@/components/ui/Avatar';
-import { Badge } from '@/components/ui/Badge';
-
-interface InfluencerCardProps {
-  profile: UserProfileSummary;
-  platform: Platform;
-  index: number;
-}
-
-const platformHoverStyles: Record<Platform, string> = {
-  instagram: 'hover:shadow-[0_0_20px_rgba(217,70,239,0.3)] hover:border-fuchsia-500/50',
-  youtube: 'hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:border-red-500/50',
-  tiktok: 'hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:border-cyan-400/50',
-};
+import { PLATFORM_CONFIG, type Platform, type UserProfileSummary } from '@/types';
 
 export const InfluencerCard = memo(function InfluencerCard({
   profile,
@@ -46,7 +30,7 @@ export const InfluencerCard = memo(function InfluencerCard({
           fullName: profile.fullname,
           platform,
           followers: profile.followers,
-          engagementRate: profile.engagement_rate ?? 0,
+          engagement: profile.engagement_rate ?? 0,
           avatarUrl: profile.picture,
           isVerified: profile.is_verified,
         });
@@ -56,14 +40,29 @@ export const InfluencerCard = memo(function InfluencerCard({
     [profile, platform, isInList, addProfile, displayUsername]
   );
 
+  const config = PLATFORM_CONFIG[platform];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
       onClick={handleClick}
-      className={`card p-5 cursor-pointer group transition-all duration-300 hover:-translate-y-[6px] ${platformHoverStyles[platform]}`}
+      className="card p-5 cursor-pointer group"
+      style={{
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease'
+      }}
+      onMouseEnter={(e) => {
+        const target = e.currentTarget;
+        target.style.boxShadow = `0 8px 24px ${config.glow}`;
+        target.style.transform = 'translateY(-6px)';
+      }}
+      onMouseLeave={(e) => {
+        const target = e.currentTarget;
+        target.style.boxShadow = 'none';
+        target.style.transform = 'none';
+      }}
     >
       <div className="flex items-center gap-4 mb-3">
         <Avatar
