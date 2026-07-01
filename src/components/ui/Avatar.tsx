@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { cn } from '@/utils/cn';
 import type { Platform } from '@/types';
 
@@ -10,10 +11,10 @@ interface AvatarProps {
 }
 
 const sizeClasses = {
-  sm: 'w-8 h-8',
-  md: 'w-12 h-12',
-  lg: 'w-16 h-16',
-  xl: 'w-28 h-28',
+  sm: 'w-8 h-8 text-xs',
+  md: 'w-12 h-12 text-sm',
+  lg: 'w-16 h-16 text-xl',
+  xl: 'w-28 h-28 text-3xl',
 };
 
 const platformBgWrapper: Record<Platform, string> = {
@@ -23,6 +24,9 @@ const platformBgWrapper: Record<Platform, string> = {
 };
 
 export function Avatar({ src, alt, size = 'md', platform, className }: AvatarProps) {
+  const [hasError, setHasError] = useState(false);
+  const initials = alt ? alt.charAt(0).toUpperCase() : '?';
+
   return (
     <div
       className={cn(
@@ -32,13 +36,20 @@ export function Avatar({ src, alt, size = 'md', platform, className }: AvatarPro
         className
       )}
     >
-      <div className="w-full h-full rounded-full overflow-hidden bg-[var(--bg-base)] border-[2px] border-[var(--bg-base)]">
-        <img
-          src={src}
-          alt={alt}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
+      <div className="w-full h-full rounded-full overflow-hidden bg-[var(--bg-base)] border-[2px] border-[var(--bg-base)] flex items-center justify-center">
+        {!hasError && src ? (
+          <img
+            src={src}
+            alt={alt}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            onError={() => setHasError(true)}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-[var(--bg-elevated)] text-[var(--text-secondary)] font-bold">
+            {initials}
+          </div>
+        )}
       </div>
     </div>
   );

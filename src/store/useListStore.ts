@@ -14,8 +14,8 @@ interface ListState {
   setFeaturedPage: (page: number) => void;
   platformPages: Record<string, number>;
   setPlatformPage: (platform: string, page: number) => void;
-  shuffledCreators: InfluencerSummary[];
-  setShuffledCreators: (creators: InfluencerSummary[]) => void;
+  shuffledCreators: any[];
+  setShuffledCreators: (creators: any[]) => void;
 }
 
 export const useListStore = create<ListState>()(
@@ -43,6 +43,18 @@ export const useListStore = create<ListState>()(
       shuffledCreators: [],
       setShuffledCreators: (creators) => set({ shuffledCreators: creators }),
     }),
-    { name: 'wobb-saved-list' }
+    { 
+      name: 'wobb-saved-list',
+      version: 1,
+      partialize: (state) => {
+        // Exclude shuffledCreators from localStorage so it gets fresh data on hard reload
+        // but survives navigation within the same session.
+        const { ...rest } = state;
+        return {
+          ...rest,
+          shuffledCreators: [] 
+        };
+      }
+    }
   )
 );

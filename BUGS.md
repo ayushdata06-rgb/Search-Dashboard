@@ -42,3 +42,9 @@
 16. **formatters.ts:1** — `formatFollowers` function is defined but never imported anywhere. Duplicate formatting logic exists inline in ProfileCard.tsx and ProfileDetailPage.tsx.
 
 17. **package.json:15** — `react-beautiful-dnd` is a deprecated dependency, incompatible with React 19 (requires `--legacy-peer-deps`), and is never imported anywhere in the codebase.
+
+## Post-Redesign Additions
+
+18. **Google User Content Image Expiry (Resolved)** — 6 YouTube creators in the `search/youtube.json` database had dead profile picture URLs (HTTP 404). This was resolved by patching the JSON file to use live dynamic links (`https://unavatar.io/youtube/{username}`). Furthermore, the `<Avatar>` component was upgraded with an `onError` state fallback to render the creator's first initial if any image URL fails to load in the future.
+
+19. **Zustand LocalStorage Desync (Resolved)** — The `shuffledCreators` state was caching deprecated `InfluencerSummary` objects instead of the new `GlobalProfile` objects, causing undefined `picture` properties on load. Solved by updating `InfluencerCard.tsx` and `InfluencerGrid.tsx` with graceful fallbacks (`profile.picture || profile.avatarUrl`).

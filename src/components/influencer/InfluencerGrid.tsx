@@ -51,7 +51,7 @@ export function InfluencerGrid({ profiles, platform, loading, currentPage }: Inf
               <InfluencerCard
                 key={profile.user_id}
                 profile={profile}
-                platform={platform}
+                platform={profile.platform || platform}
                 index={index}
               />
             ))}

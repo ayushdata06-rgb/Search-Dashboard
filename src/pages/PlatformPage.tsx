@@ -35,7 +35,7 @@ export function PlatformPage() {
     let active = true;
     setLoading(true);
     
-    import(`../../assets/data/search/${currentPlatform}.json`)
+    import(`../assets/data/search/${currentPlatform}.json`)
       .then((mod: { default: SearchData }) => {
         if (!active) return;
         const profiles = mod.default.accounts.map((item) => item.account.user_profile);
@@ -64,7 +64,6 @@ export function PlatformPage() {
   }, [creators, debouncedQuery]);
 
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
   
   const currentProfiles = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;

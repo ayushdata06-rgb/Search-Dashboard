@@ -15,6 +15,7 @@ export interface UserProfileSummary {
   engagements?: number;
   engagement_rate?: number;
   avg_views?: number;
+  platform?: Platform;
 }
 
 export interface SearchAccount {

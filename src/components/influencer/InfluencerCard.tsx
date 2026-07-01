@@ -4,7 +4,16 @@ import { motion } from 'framer-motion';
 import { Plus, Check, BadgeCheck } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { PLATFORM_CONFIG, type Platform, type UserProfileSummary } from '@/types';
+import { useListStore } from '@/store/useListStore';
+import { formatCompact, formatEngagementRate } from '@/utils/formatters';
+import { Avatar } from '@/components/ui/Avatar';
+import { Badge } from '@/components/ui/Badge';
 
+interface InfluencerCardProps {
+  profile: UserProfileSummary;
+  platform: Platform;
+  index: number;
+}
 export const InfluencerCard = memo(function InfluencerCard({
   profile,
   platform,
@@ -66,8 +75,8 @@ export const InfluencerCard = memo(function InfluencerCard({
     >
       <div className="flex items-center gap-4 mb-3">
         <Avatar
-          src={profile.picture}
-          alt={profile.fullname}
+          src={profile.picture || (profile as any).avatarUrl}
+          alt={profile.fullname || (profile as any).fullName}
           size="lg"
           platform={platform}
         />
@@ -81,7 +90,7 @@ export const InfluencerCard = memo(function InfluencerCard({
             )}
           </div>
           <p className="text-sm text-[var(--text-secondary)] truncate">
-            {profile.fullname}
+            {profile.fullname || (profile as any).fullName}
           </p>
         </div>
       </div>
@@ -96,7 +105,7 @@ export const InfluencerCard = memo(function InfluencerCard({
         <div className="w-px h-4 bg-[var(--border)]" />
         <div>
           <span className="font-mono font-semibold text-[var(--text-primary)]">
-            {formatEngagementRate(profile.engagement_rate)}
+            {formatEngagementRate(profile.engagement_rate ?? (profile as any).engagement ?? 0)}
           </span>
           <span className="text-[var(--text-muted)] ml-1">eng.</span>
         </div>

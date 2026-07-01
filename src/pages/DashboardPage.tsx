@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import type { Platform } from '@/types';
+
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { SearchDropdown } from '@/components/influencer/SearchDropdown';
 import { InfluencerGrid } from '@/components/influencer/InfluencerGrid';
