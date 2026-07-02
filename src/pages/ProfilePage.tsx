@@ -21,7 +21,7 @@ export function ProfilePage() {
   const [searchParams] = useSearchParams();
   const platform = (searchParams.get('platform') as Platform) || 'instagram';
   const { data: user, loading, error } = useProfileData(username);
-  
+
   const statsRef = useRef<HTMLDivElement>(null);
 
   const addProfile = useListStore((s) => s.addProfile);
@@ -54,15 +54,15 @@ export function ProfilePage() {
       targets.forEach((el, index) => {
         const val = parseFloat(el.getAttribute('data-val') || '0');
         const format = el.getAttribute('data-format');
-        
+
         const obj = { val: 0 };
         gsap.to(obj, {
           val: val,
           duration: 1.5,
           ease: 'power2.out',
           delay: index * 0.15,
-          onUpdate: function() {
-            el.textContent = format === 'percent' 
+          onUpdate: function () {
+            el.textContent = format === 'percent'
               ? formatEngagementRate(obj.val)
               : formatCompact(obj.val);
           }
@@ -92,14 +92,13 @@ export function ProfilePage() {
     <PageWrapper>
       {/* 1. NAVBAR */}
       <div className="flex items-center justify-end sticky top-0 z-10 bg-[var(--bg-base)]/80 backdrop-blur-md py-4 mb-6 border-b border-[var(--border)]">
-        
+
         <button
           onClick={handleToggleList}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
-            isInList
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${isInList
               ? 'bg-[var(--success)]/15 text-[var(--success)] border border-[var(--success)]/30'
               : 'bg-purple-600 text-white hover:bg-purple-700'
-          }`}
+            }`}
         >
           {isInList ? (
             <><Check className="w-4 h-4" /> In List</>
@@ -112,9 +111,9 @@ export function ProfilePage() {
       <div className="flex flex-col gap-6">
         {/* TOP SECTION: Avatar and Stats */}
         <div className="flex flex-col lg:flex-row gap-6 items-stretch">
-          
+
           {/* 2. TOP-RIGHT PROFILE SECTION (actually on the left visually but described as "Top-Right Profile Section") */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
@@ -127,7 +126,7 @@ export function ProfilePage() {
                 {user.is_verified && <BadgeCheck className="w-5 h-5 text-purple-500" />}
               </div>
               <p className="text-sm text-[var(--text-muted)] mb-3">{user.fullname}</p>
-              
+
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-4">
                 <Badge variant={platform}>{getPlatformLabel(platform)}</Badge>
                 {user.is_business && <Badge variant="tiktok">Business</Badge>}
@@ -142,7 +141,7 @@ export function ProfilePage() {
           </motion.div>
 
           {/* 3. TOP-CENTRE STATS BAR */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
@@ -172,9 +171,9 @@ export function ProfilePage() {
 
         {/* BOTTOM SECTION: Info and Analytics */}
         <div className="flex flex-col lg:flex-row gap-6 items-stretch">
-          
+
           {/* 4. LEFT SIDE - INFO */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.4 }}
@@ -195,7 +194,7 @@ export function ProfilePage() {
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 text-[var(--text-muted)] mr-3" />
                 <span className="text-[var(--text-secondary)] w-24">Location</span>
-                <span className="text-white font-medium">{user.language ? user.language.name : 'Unknown'}</span>
+                <span className="text-white font-medium">{user.language ? (typeof user.language === 'object' ? user.language.name : user.language) : 'Unknown'}</span>
               </div>
               <div className="flex items-center">
                 <BadgeCheck className="w-4 h-4 text-[var(--text-muted)] mr-3" />
@@ -215,14 +214,14 @@ export function ProfilePage() {
           </motion.div>
 
           {/* 5. RIGHT SIDE - ANALYTICS */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.5 }}
             className="flex-[2] bg-white/3 rounded-2xl p-6 border border-white/5"
           >
             <h3 className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-6">Analytics</h3>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               <div className="bg-[#111118] p-4 rounded-xl border border-white/5">
                 <div className="text-xs text-[var(--text-muted)] mb-1">Engagement Rate</div>
