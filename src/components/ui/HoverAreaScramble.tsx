@@ -182,7 +182,7 @@ export function HoverAreaScramble({
               {char}
             </span>
           ))}
-          {wordIdx < words.length - 1 && <span className="scramble-char inline-block" data-original=" ">&nbsp;</span>}
+          {wordIdx < words.length - 1 && <span className="scramble-char inline-block w-2" data-original=" ">&nbsp;</span>}
         </span>
       ))}
     </span>

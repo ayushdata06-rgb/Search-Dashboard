@@ -312,10 +312,10 @@ export function FeaturesPage() {
             </div>
             <h3 className="section-subheading row-heading mb-6 whitespace-pre-line">{"One search.\nEvery platform."}</h3>
             <ul className="flex flex-col gap-6 mt-4">
-              {["Searches username and full name", "Results appear as you type with 200ms debounce", "Cross-platform results in one dropdown"].map((item, idx) => (
+              {["Search by username or full name", "Lightning-fast results appear as you type", "Find creators across all platforms in one place"].map((item, idx) => (
                 <li key={idx} className="feature-bullet flex items-start gap-4">
                   <Check className="w-6 h-6 text-pink-400 shrink-0 mt-0.5" />
-                  <span className="font-['Plus_Jakarta_Sans'] font-light text-[20px] md:text-[24px] text-[#d4d4e4] leading-snug">
+                  <span className="font-['Plus_Jakarta_Sans'] font-light text-[17px] md:text-[20px] text-[#d4d4e4] leading-snug">
                     <HoverAreaScramble text={item} scrambleColor="#f472b6" />
                   </span>
                 </li>
@@ -396,10 +396,10 @@ export function FeaturesPage() {
             </div>
             <h3 className="section-subheading row-heading mb-6 whitespace-pre-line">{"Go deep on\neach platform."}</h3>
             <ul className="flex flex-col gap-6 mt-4">
-              {["Platform-specific search bar with logo", "6 creators per page with smooth pagination", "Instant results — no page reload"].map((item, idx) => (
+              {["Dedicated hubs for TikTok, YouTube & Instagram", "Seamlessly browse through creator profiles", "Instant updates without reloading the page"].map((item, idx) => (
                 <li key={idx} className="feature-bullet flex items-start gap-4">
                   <Check className="w-6 h-6 text-pink-400 shrink-0 mt-0.5" />
-                  <span className="font-['Plus_Jakarta_Sans'] font-light text-[20px] md:text-[24px] text-[#d4d4e4] leading-snug">
+                  <span className="font-['Plus_Jakarta_Sans'] font-light text-[17px] md:text-[20px] text-[#d4d4e4] leading-snug">
                     <HoverAreaScramble text={item} scrambleColor="#f472b6" />
                   </span>
                 </li>
@@ -449,10 +449,10 @@ export function FeaturesPage() {
             </div>
             <h3 className="section-subheading row-heading mb-6 whitespace-pre-line">{"Save creators.\nBuild campaigns."}</h3>
             <ul className="flex flex-col gap-6 mt-4">
-              {["No duplicate entries", "Persists after page refresh via localStorage", "Remove any creator instantly"].map((item, idx) => (
+              {["Save your favorite creators in one click", "Your list stays saved even if you close the tab", "Organize and manage your campaign roster easily"].map((item, idx) => (
                 <li key={idx} className="feature-bullet flex items-start gap-4">
                   <Check className="w-6 h-6 text-pink-400 shrink-0 mt-0.5" />
-                  <span className="font-['Plus_Jakarta_Sans'] font-light text-[20px] md:text-[24px] text-[#d4d4e4] leading-snug">
+                  <span className="font-['Plus_Jakarta_Sans'] font-light text-[17px] md:text-[20px] text-[#d4d4e4] leading-snug">
                     <HoverAreaScramble text={item} scrambleColor="#f472b6" />
                   </span>
                 </li>
