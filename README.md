@@ -82,3 +82,5 @@ render cycle, without fighting Zustand state or component lifecycles.
 - Implement virtual scrolling (`react-window`) for the influencer search grid.
 - Expand keyboard navigation accessibility (ARIA roles).
 - Add CSV export functionality for the saved influencer list.
+- Better UI for the landing pages.
+- Better architecture of the dashboard.
