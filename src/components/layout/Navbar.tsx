@@ -25,12 +25,12 @@ export function Navbar() {
 
           <button
             onClick={() => setPanelOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] hover:border-[var(--accent)]/50 transition-all text-sm font-medium text-[var(--text-primary)]"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] hover:border-purple-500/50 transition-all text-sm font-medium text-[var(--text-primary)]"
           >
             <List className="w-4 h-4" />
             <span className="hidden sm:inline">My List</span>
             {savedCount > 0 && (
-              <span className={`ml-1 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-[var(--accent)] text-white min-w-[20px] text-center ${isBouncing ? 'animate-bounce-badge' : ''}`}>
+              <span className={`ml-1 px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-purple-600 text-white min-w-[20px] text-center ${isBouncing ? 'animate-bounce-badge' : ''}`}>
                 {savedCount}
               </span>
             )}

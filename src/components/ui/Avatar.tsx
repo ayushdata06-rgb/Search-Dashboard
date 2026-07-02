@@ -8,6 +8,7 @@ interface AvatarProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   platform?: Platform;
   className?: string;
+  username?: string;
 }
 
 const sizeClasses = {
@@ -23,8 +24,8 @@ const platformBgWrapper: Record<Platform, string> = {
   tiktok: 'bg-cyan-400',
 };
 
-export function Avatar({ src, alt, size = 'md', platform, className }: AvatarProps) {
-  const [hasError, setHasError] = useState(false);
+export function Avatar({ src, alt, size = 'md', platform, className, username }: AvatarProps) {
+  const [imgSrc, setImgSrc] = useState(src);
   const initials = alt ? alt.charAt(0).toUpperCase() : '?';
 
   return (
@@ -37,13 +38,19 @@ export function Avatar({ src, alt, size = 'md', platform, className }: AvatarPro
       )}
     >
       <div className="w-full h-full rounded-full overflow-hidden bg-[var(--bg-base)] border-[2px] border-[var(--bg-base)] flex items-center justify-center">
-        {!hasError && src ? (
+        {imgSrc ? (
           <img
-            src={src}
+            src={imgSrc}
             alt={alt}
             className="w-full h-full object-cover"
             loading="lazy"
-            onError={() => setHasError(true)}
+            onError={() => {
+              if (imgSrc === src && username && platform) {
+                setImgSrc(`https://unavatar.io/${platform}/${username}`);
+              } else {
+                setImgSrc('');
+              }
+            }}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-[var(--bg-elevated)] text-[var(--text-secondary)] font-bold">

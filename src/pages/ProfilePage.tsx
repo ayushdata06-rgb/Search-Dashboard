@@ -55,21 +55,18 @@ export function ProfilePage() {
         const val = parseFloat(el.getAttribute('data-val') || '0');
         const format = el.getAttribute('data-format');
         
-        gsap.fromTo(el, 
-          { innerHTML: 0 },
-          {
-            innerHTML: val,
-            duration: 1.5,
-            ease: 'power2.out',
-            delay: index * 0.15,
-            onUpdate: function() {
-              const current = Number(this.targets()[0].innerHTML);
-              el.textContent = format === 'percent' 
-                ? formatEngagementRate(current)
-                : formatCompact(current);
-            }
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: val,
+          duration: 1.5,
+          ease: 'power2.out',
+          delay: index * 0.15,
+          onUpdate: function() {
+            el.textContent = format === 'percent' 
+              ? formatEngagementRate(obj.val)
+              : formatCompact(obj.val);
           }
-        );
+        });
       });
     }, statsRef);
     return () => ctx.revert();
@@ -123,7 +120,7 @@ export function ProfilePage() {
             transition={{ duration: 0.4 }}
             className="flex-1 flex flex-col sm:flex-row items-center sm:items-start gap-6 bg-white/3 rounded-2xl p-6 border border-white/5"
           >
-            <Avatar src={user.picture} alt={user.fullname} size="xl" platform={platform} className="w-[120px] h-[120px] shadow-xl" />
+            <Avatar src={user.picture} alt={user.fullname} size="xl" platform={platform} username={user.username ?? username} className="w-[120px] h-[120px] shadow-xl" />
             <div className="flex-1 text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
                 <h1 className="text-2xl font-bold text-white tracking-tight">@{user.username ?? username}</h1>

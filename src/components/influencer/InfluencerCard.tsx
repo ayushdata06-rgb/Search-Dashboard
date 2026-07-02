@@ -79,6 +79,7 @@ export const InfluencerCard = memo(function InfluencerCard({
           alt={profile.fullname || (profile as any).fullName}
           size="lg"
           platform={platform}
+          username={displayUsername}
         />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
@@ -86,7 +87,7 @@ export const InfluencerCard = memo(function InfluencerCard({
               @{displayUsername}
             </span>
             {profile.is_verified && (
-              <BadgeCheck className="w-4 h-4 text-[var(--accent)] flex-shrink-0" />
+              <BadgeCheck className="w-4 h-4 text-purple-500 flex-shrink-0" />
             )}
           </div>
           <p className="text-sm text-[var(--text-secondary)] truncate">
@@ -131,7 +132,7 @@ export const InfluencerCard = memo(function InfluencerCard({
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             isInList
               ? 'bg-green-500/15 text-green-500 border border-green-500/20 cursor-not-allowed'
-              : 'bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 hover:bg-[var(--accent)]/20'
+              : 'bg-purple-500/10 text-purple-500 border border-purple-500/20 hover:bg-purple-500/20'
           }`}
         >
           {isInList ? (

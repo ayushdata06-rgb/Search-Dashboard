@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
 import type { ProfileDetailResponse, FullUserProfile } from '../types';
+import { useGlobalSearch } from './useGlobalSearch';
 
 export function useProfileData(username: string | undefined) {
   const [data, setData] = useState<FullUserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [prevUsername, setPrevUsername] = useState(username);
+  
+  const [jsonFailed, setJsonFailed] = useState(false);
+  const { data: globalProfiles, loading: globalLoading } = useGlobalSearch();
 
   if (username !== prevUsername) {
     setPrevUsername(username);
     setData(null);
+    setJsonFailed(false);
     if (!username) {
       setError('No username provided');
       setLoading(false);
@@ -20,7 +25,7 @@ export function useProfileData(username: string | undefined) {
   }
 
   useEffect(() => {
-    if (!username) return;
+    if (!username || username !== prevUsername) return;
 
     let active = true;
 
@@ -37,14 +42,35 @@ export function useProfileData(username: string | undefined) {
       })
       .catch(() => {
         if (!active) return;
-        setError('Profile not found');
-        setLoading(false);
+        setJsonFailed(true);
       });
       
     return () => {
       active = false;
     };
-  }, [username]);
+  }, [username, prevUsername]);
+
+  useEffect(() => {
+    if (jsonFailed && !globalLoading && username) {
+      const fallbackProfile = globalProfiles.find(p => (p.username ?? p.handle ?? p.custom_name ?? p.user_id) === username);
+      if (fallbackProfile) {
+        setData({
+          ...fallbackProfile,
+          description: "Info not available",
+          recent_posts: [],
+          url: "",
+          is_verified: fallbackProfile.is_verified ?? false,
+          avg_likes: 0,
+          avg_comments: 0,
+          avg_views: fallbackProfile.avg_views ?? 0,
+        } as FullUserProfile);
+        setError(null);
+      } else {
+        setError('Profile not found');
+      }
+      setLoading(false);
+    }
+  }, [jsonFailed, globalLoading, username, globalProfiles]);
 
   return { data, loading, error };
 }
